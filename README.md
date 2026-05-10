@@ -16,12 +16,14 @@ network call.
 
 The canonical URL the daemon fetches is:
 
-    https://hypragent.dev/mcp/registry.toml
+    https://registry.hypragent.dev/registry.toml
 
 This repo's `main` branch is published via GitHub Pages, with a
-custom domain mapped onto `hypragent.dev`. The daemon fetches with
-`If-None-Match` against the previous ETag, caches locally for 24h,
-and falls back to the cached copy when the network is unavailable.
+custom domain mapped onto `registry.hypragent.dev` (a dedicated
+subdomain so the registry can grow independently of any future
+content on the apex). The daemon fetches with `If-None-Match`
+against the previous ETag, caches locally for 24h, and falls
+back to the cached copy when the network is unavailable.
 
 ## What the daemon does with this file
 
