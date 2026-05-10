@@ -1,0 +1,107 @@
+# HyprAgent MCP Server Registry — bundled snapshot v1
+#
+# This file ships with the hypragent-core package and provides the baseline
+# set of well-known MCP servers available for one-click install.
+#
+# Field reference per [[servers]] entry:
+#   id                 unique slug; used as the [mcp.<id>] key in config.toml
+#   name               human-readable label shown in the UI
+#   description        one-line description (shown in server list + install dialog)
+#   icon               emoji or absolute image URL; shown beside the name
+#   homepage           upstream project / documentation URL
+#   type               transport: "stdio" | "sse" | "http"
+#   command            executable to spawn (stdio only)
+#   args               argument list passed to command (stdio only)
+#   url                server URL (sse/http only; omit for stdio)
+#   default_permission suggested permission level: "allow" | "ask" | "deny"
+#   signature          reserved for future ed25519 signing; always "" in this version
+#
+# env_required / env_optional: inline array of {name, description, secret}
+#   name        environment variable name
+#   description shown to the user in the install dialog
+#   secret      true  → value written to secret.toml [mcp.<id>]
+#               false → value written to config.toml  [mcp.<id>.env]
+
+[[servers]]
+id          = "github"
+name        = "GitHub"
+description = "Browse repositories, issues, pull requests and code search"
+icon        = "🐙"
+homepage    = "https://github.com/modelcontextprotocol/servers/tree/main/src/github"
+type        = "stdio"
+command     = "npx"
+args        = ["-y", "@modelcontextprotocol/server-github"]
+url         = ""
+default_permission = "ask"
+signature   = ""
+env_required = [
+    {name = "GITHUB_PERSONAL_ACCESS_TOKEN", description = "Personal Access Token with repo scope", secret = true},
+]
+env_optional = []
+
+[[servers]]
+id          = "filesystem"
+name        = "Filesystem"
+description = "Read and write files within explicitly allowed directory paths"
+icon        = "📁"
+homepage    = "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
+type        = "stdio"
+command     = "npx"
+args        = ["-y", "@modelcontextprotocol/server-filesystem"]
+url         = ""
+default_permission = "ask"
+signature   = ""
+env_required = []
+env_optional = []
+
+[[servers]]
+id          = "slack"
+name        = "Slack"
+description = "Read channels and messages, post to your Slack workspace"
+icon        = "💬"
+homepage    = "https://github.com/modelcontextprotocol/servers/tree/main/src/slack"
+type        = "stdio"
+command     = "npx"
+args        = ["-y", "@modelcontextprotocol/server-slack"]
+url         = ""
+default_permission = "ask"
+signature   = ""
+env_required = [
+    {name = "SLACK_BOT_TOKEN", description = "Bot token from api.slack.com (starts with xoxb-)", secret = true},
+    {name = "SLACK_TEAM_ID",   description = "Workspace/team ID from your Slack URL (starts with T)", secret = false},
+]
+env_optional = []
+
+[[servers]]
+id          = "notion"
+name        = "Notion"
+description = "Read and write Notion pages and databases"
+icon        = "📝"
+homepage    = "https://github.com/makenotion/notion-mcp-server"
+type        = "stdio"
+command     = "npx"
+args        = ["-y", "@notionhq/notion-mcp-server"]
+url         = ""
+default_permission = "ask"
+signature   = ""
+env_required = [
+    {name = "OPENAPI_MCP_HEADERS", description = "JSON headers including Notion API key, e.g. {\"Authorization\": \"Bearer secret_xxx\", \"Notion-Version\": \"2022-06-28\"}", secret = true},
+]
+env_optional = []
+
+[[servers]]
+id          = "linear"
+name        = "Linear"
+description = "Manage Linear issues, projects and teams"
+icon        = "🔷"
+homepage    = "https://github.com/modelcontextprotocol/servers"
+type        = "stdio"
+command     = "npx"
+args        = ["-y", "linear-mcp-server"]
+url         = ""
+default_permission = "ask"
+signature   = ""
+env_required = [
+    {name = "LINEAR_API_KEY", description = "Linear API key from Settings → API", secret = true},
+]
+env_optional = []
