@@ -39,20 +39,11 @@ env_required = [
 ]
 env_optional = []
 
-[[servers]]
-id          = "filesystem"
-name        = "Filesystem"
-description = "Read and write files within explicitly allowed directory paths"
-icon        = "📁"
-homepage    = "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
-type        = "stdio"
-command     = "npx"
-args        = ["-y", "@modelcontextprotocol/server-filesystem"]
-url         = ""
-default_permission = "ask"
-signature   = ""
-env_required = []
-env_optional = []
+# `filesystem` entry retired in HyprAgent 0.6.0 — superseded by the built-in
+# Settings → Tools → Filesystem pane (Read / Glob / Grep / Write / Edit /
+# Bash via the SDK's native tools + an allowed_paths allowlist).  Users
+# who already installed it from the registry keep working; new installs
+# should use the built-in.
 
 [[servers]]
 id          = "slack"
