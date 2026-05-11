@@ -39,11 +39,27 @@ env_required = [
 ]
 env_optional = []
 
-# `filesystem` entry retired in HyprAgent 0.6.0 — superseded by the built-in
-# Settings → Tools → Filesystem pane (Read / Glob / Grep / Write / Edit /
-# Bash via the SDK's native tools + an allowed_paths allowlist).  Users
-# who already installed it from the registry keep working; new installs
-# should use the built-in.
+[[servers]]
+id          = "google-workspace"
+name        = "Google Workspace"
+description = "Gmail, Calendar, Drive, Docs, Sheets, Slides, Forms, Tasks, Contacts and Chat in one stdio MCP. Community-maintained (taylorwilsdon). Setup is heavier than GitHub/Slack: you create an OAuth 2.0 client in your own Google Cloud project, enable the relevant APIs (Gmail / Drive / Calendar / Docs / …), then grant consent in a browser on first run."
+icon        = "📅"
+homepage    = "https://github.com/taylorwilsdon/google_workspace_mcp"
+type        = "stdio"
+command     = "uvx"
+args        = ["workspace-mcp"]
+url         = ""
+default_permission = "ask"
+signature   = ""
+env_required = [
+    {name = "GOOGLE_OAUTH_CLIENT_ID", description = "OAuth 2.0 client ID. Create at console.cloud.google.com → APIs & Services → Credentials. Use the 'Desktop app' application type — the server uses a localhost loopback for the consent callback.", secret = true},
+    {name = "GOOGLE_OAUTH_CLIENT_SECRET", description = "OAuth 2.0 client secret paired with the client ID above.", secret = true},
+]
+env_optional = [
+    {name = "OAUTHLIB_INSECURE_TRANSPORT", description = "Set to '1' to allow http://localhost OAuth redirects during the local consent flow. Required for the loopback callback; safe on a desktop where the callback never leaves the machine.", secret = false},
+    {name = "USER_GOOGLE_EMAIL", description = "Single-user mode: pin the server to one Google account so tool calls don't need to pass an email each time. Omit for multi-account mode.", secret = false},
+    {name = "WORKSPACE_MCP_PORT", description = "Local port for the OAuth callback listener (default 8000). Only relevant during the one-time consent flow.", secret = false},
+]
 
 [[servers]]
 id          = "slack"
