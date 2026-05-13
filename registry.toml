@@ -112,3 +112,185 @@ env_required = [
     {name = "LINEAR_API_KEY", description = "Linear API key from Settings → API", secret = true},
 ]
 env_optional = []
+
+# ---------------------------------------------------------------------------
+# Google-hosted Workspace MCP servers (remote http, OAuth 2.1 + PKCE).
+#
+# Google hosts these endpoints; claude-code handles the OAuth dance.
+# The user supplies a client_id (non-secret) + client_secret (secret) from
+# their own Google Cloud OAuth 2.0 client (Desktop app type). The
+# install dialog uses `instructions` / `instructions_link` to walk the
+# user through creating those credentials and `oauth.scopes` to pin
+# the requested scope set.
+# ---------------------------------------------------------------------------
+
+[[servers]]
+id          = "google_gmail"
+name        = "Google Gmail"
+description = "Read, search, label, and send Gmail via Google's hosted MCP server"
+icon        = "📧"
+homepage    = "https://developers.google.com/gmail/api"
+type        = "http"
+url         = "https://gmailmcp.googleapis.com/mcp/v1"
+command     = ""
+args        = []
+default_permission = "ask"
+signature   = ""
+instructions = """
+### Set up Google OAuth credentials
+
+1. Open the [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials).
+2. Pick (or create) a project, then click **Create credentials → OAuth client ID**.
+3. Choose **Desktop app** as the application type and give it a name like "HyprAgent".
+4. Copy the **Client ID** and **Client secret** into the fields below.
+5. On first use, claude-code will pop a browser window to grant consent for the scopes requested.
+
+You can revoke access at any time from your [Google Account → Third-party apps](https://myaccount.google.com/connections).
+"""
+instructions_link = "https://console.cloud.google.com/apis/credentials"
+instructions_link_label = "Open Credential Console"
+env_required = [
+    {name = "client_id", description = "OAuth 2.0 Client ID (Desktop app type) from your Google Cloud project.", secret = false},
+    {name = "client_secret", description = "OAuth 2.0 Client secret paired with the client ID above.", secret = true},
+]
+env_optional = []
+
+[servers.oauth]
+scopes = "https://www.googleapis.com/auth/gmail.modify"
+
+[[servers]]
+id          = "google_drive"
+name        = "Google Drive"
+description = "List, search, read, and edit Google Drive files via Google's hosted MCP server"
+icon        = "📁"
+homepage    = "https://developers.google.com/drive"
+type        = "http"
+url         = "https://drivemcp.googleapis.com/mcp/v1"
+command     = ""
+args        = []
+default_permission = "ask"
+signature   = ""
+instructions = """
+### Set up Google OAuth credentials
+
+1. Open the [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials).
+2. Pick (or create) a project, then click **Create credentials → OAuth client ID**.
+3. Choose **Desktop app** as the application type and give it a name like "HyprAgent".
+4. Copy the **Client ID** and **Client secret** into the fields below.
+5. On first use, claude-code will pop a browser window to grant consent for the scopes requested.
+
+The `drive.file` scope below limits HyprAgent to files it creates or
+that you explicitly share with it — it cannot enumerate your entire
+Drive.  Replace with `https://www.googleapis.com/auth/drive` after
+install if you want full-Drive access.
+"""
+instructions_link = "https://console.cloud.google.com/apis/credentials"
+instructions_link_label = "Open Credential Console"
+env_required = [
+    {name = "client_id", description = "OAuth 2.0 Client ID (Desktop app type) from your Google Cloud project.", secret = false},
+    {name = "client_secret", description = "OAuth 2.0 Client secret paired with the client ID above.", secret = true},
+]
+env_optional = []
+
+[servers.oauth]
+scopes = "https://www.googleapis.com/auth/drive.file"
+
+[[servers]]
+id          = "google_calendar"
+name        = "Google Calendar"
+description = "Read events and create / update calendar entries via Google's hosted MCP server"
+icon        = "📅"
+homepage    = "https://developers.google.com/calendar"
+type        = "http"
+url         = "https://calendarmcp.googleapis.com/mcp/v1"
+command     = ""
+args        = []
+default_permission = "ask"
+signature   = ""
+instructions = """
+### Set up Google OAuth credentials
+
+1. Open the [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials).
+2. Pick (or create) a project, then click **Create credentials → OAuth client ID**.
+3. Choose **Desktop app** as the application type and give it a name like "HyprAgent".
+4. Copy the **Client ID** and **Client secret** into the fields below.
+5. On first use, claude-code will pop a browser window to grant consent for the scopes requested.
+"""
+instructions_link = "https://console.cloud.google.com/apis/credentials"
+instructions_link_label = "Open Credential Console"
+env_required = [
+    {name = "client_id", description = "OAuth 2.0 Client ID (Desktop app type) from your Google Cloud project.", secret = false},
+    {name = "client_secret", description = "OAuth 2.0 Client secret paired with the client ID above.", secret = true},
+]
+env_optional = []
+
+[servers.oauth]
+scopes = "https://www.googleapis.com/auth/calendar.events"
+
+[[servers]]
+id          = "google_chat"
+name        = "Google Chat"
+description = "Read and send Google Chat messages via Google's hosted MCP server"
+icon        = "💬"
+homepage    = "https://developers.google.com/chat"
+type        = "http"
+url         = "https://chatmcp.googleapis.com/mcp/v1"
+command     = ""
+args        = []
+default_permission = "ask"
+signature   = ""
+instructions = """
+### Set up Google OAuth credentials
+
+1. Open the [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials).
+2. Pick (or create) a project, then click **Create credentials → OAuth client ID**.
+3. Choose **Desktop app** as the application type and give it a name like "HyprAgent".
+4. Copy the **Client ID** and **Client secret** into the fields below.
+5. On first use, claude-code will pop a browser window to grant consent for the scopes requested.
+
+Google Chat requires the account to be part of a Workspace tenant
+that has Chat enabled — consumer @gmail.com accounts cannot grant
+this scope.
+"""
+instructions_link = "https://console.cloud.google.com/apis/credentials"
+instructions_link_label = "Open Credential Console"
+env_required = [
+    {name = "client_id", description = "OAuth 2.0 Client ID (Desktop app type) from your Google Cloud project.", secret = false},
+    {name = "client_secret", description = "OAuth 2.0 Client secret paired with the client ID above.", secret = true},
+]
+env_optional = []
+
+[servers.oauth]
+scopes = "https://www.googleapis.com/auth/chat.messages"
+
+[[servers]]
+id          = "google_people"
+name        = "Google People"
+description = "Read and edit Google Contacts via Google's hosted People API MCP server"
+icon        = "👤"
+homepage    = "https://developers.google.com/people"
+type        = "http"
+url         = "https://peoplemcp.googleapis.com/mcp/v1"
+command     = ""
+args        = []
+default_permission = "ask"
+signature   = ""
+instructions = """
+### Set up Google OAuth credentials
+
+1. Open the [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials).
+2. Pick (or create) a project, then click **Create credentials → OAuth client ID**.
+3. Choose **Desktop app** as the application type and give it a name like "HyprAgent".
+4. Copy the **Client ID** and **Client secret** into the fields below.
+5. On first use, claude-code will pop a browser window to grant consent for the scopes requested.
+"""
+instructions_link = "https://console.cloud.google.com/apis/credentials"
+instructions_link_label = "Open Credential Console"
+env_required = [
+    {name = "client_id", description = "OAuth 2.0 Client ID (Desktop app type) from your Google Cloud project.", secret = false},
+    {name = "client_secret", description = "OAuth 2.0 Client secret paired with the client ID above.", secret = true},
+]
+env_optional = []
+
+[servers.oauth]
+scopes = "https://www.googleapis.com/auth/contacts"
